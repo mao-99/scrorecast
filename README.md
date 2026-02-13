@@ -1,8 +1,6 @@
 # ScoreCast
 
-CodePath WEB103 Final Project
-
-Designed and developed by: modufade
+Designed and developed by: Mubarak Odufade
 
 🔗 Link to deployed app: 
 
