@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScoreCast - Soccer Analytics Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #f1f5f9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(15, 23, 42, 0.5);
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: rgba(30, 41, 59, 0.7);
+            box-shadow: 0 6px 20px rgba(148, 163, 184, 0.25);
+            transform: translateY(-2px);
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+
+        .btn-primary {
+            background: rgba(30, 64, 175, 0.3);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #93c5fd;
+        }
+
+        .btn-primary:hover {
+            background: rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+            color: #dbeafe;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            color: #f8fafc;
+        }
+
+        .hero-subtitle {
+            font-size: 1.35rem;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .cta-section {
+            margin-bottom: 6rem;
+        }
+
+        .cta-prompt {
+            font-size: 1.5rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+        }
+
+        .cta-buttons .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* League Slideshow */
+        .league-section {
+            padding: 4rem 0 8rem;
+            overflow: hidden;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #f1f5f9;
+            letter-spacing: -0.02em;
+        }
+
+        .slideshow-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .slideshow-container::before,
+        .slideshow-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .slideshow-container::before {
+            left: 0;
+            background: linear-gradient(to right, #020617, transparent);
+        }
+
+        .slideshow-container::after {
+            right: 0;
+            background: linear-gradient(to left, #020617, transparent);
+        }
+
+        .slideshow-track {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            width: fit-content;
+        }
+
+        .slideshow-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .league-slide {
+            flex: 0 0 250px;
+            margin: 0 1.5rem;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(71, 85, 105, 0.12);
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+
+        .league-slide:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            background: rgba(30, 41, 59, 0.5);
+            border-color: rgba(148, 163, 184, 0.3);
+            box-shadow: 0 8px 24px rgba(100, 116, 139, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .league-slide .league-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f1f5f9;
+            text-align: center;
+        }
+
+        .league-slide .league-country {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .league-slide .league-stats {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .league-slide .stat {
+            text-align: center;
+        }
+
+        .league-slide .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .league-slide .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.15rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .league-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">ScoreCast</div>
+                <nav class="nav-buttons">
+                    <a href="#" class="btn">Leagues</a>
+                    <a href="#" class="btn">Teams</a>
+                    <a href="#" class="btn">Seasons</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Advanced Soccer Analytics</h1>
+                <p class="hero-subtitle">Uncover insights from 15,000+ matches across six elite leagues</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary">Explore Data</button>
+                    <button class="btn">View Demo</button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="league-section">
+            <div class="container">
+                <h2 class="section-title">Leagues</h2>
+                <div class="slideshow-container">
+                    <div class="slideshow-track">
+                        <!-- First set of slides -->
+                        <div class="league-slide">
+                            <div class="league-name">Premier League</div>
+                            <div class="league-country">England</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">20</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.8K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">La Liga</div>
+                            <div class="league-country">Spain</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">20</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.7K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Bundesliga</div>
+                            <div class="league-country">Germany</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">18</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.4K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Serie A</div>
+                            <div class="league-country">Italy</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">20</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.8K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Ligue 1</div>
+                            <div class="league-country">France</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">18</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.4K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Eredivisie</div>
+                            <div class="league-country">Netherlands</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">18</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">1.9K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate set for seamless loop -->
+                        <div class="league-slide">
+                            <div class="league-name">Premier League</div>
+                            <div class="league-country">England</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">20</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.8K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">La Liga</div>
+                            <div class="league-country">Spain</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">20</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.7K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Bundesliga</div>
+                            <div class="league-country">Germany</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">18</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.4K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Serie A</div>
+                            <div class="league-country">Italy</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">20</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.8K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Ligue 1</div>
+                            <div class="league-country">France</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">18</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">2.4K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="league-slide">
+                            <div class="league-name">Eredivisie</div>
+                            <div class="league-country">Netherlands</div>
+                            <div class="league-stats">
+                                <div class="stat">
+                                    <div class="stat-value">18</div>
+                                    <div class="stat-label">Teams</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">1.9K</div>
+                                    <div class="stat-label">Matches</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Platform Capabilities</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Comprehensive Statistics</h3>
+                        <p class="feature-description">Access 31,000+ match statistics across multiple seasons with 50+ metrics per match</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">Predictive Analytics</h3>
+                        <p class="feature-description">Machine learning models achieving 73% accuracy for match outcome predictions</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Dynamic Filtering</h3>
+                        <p class="feature-description">Filter by rounds, seasons, and custom time periods for flexible analysis</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>ScoreCast © 2024 | Advanced Soccer Analytics Platform</p>
+        </div>
+    </footer>
+</body>
+</html>

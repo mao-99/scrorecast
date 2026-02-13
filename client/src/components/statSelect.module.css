@@ -1,0 +1,55 @@
+.buttonContainer {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 1rem auto;
+    
+}
+
+.statButton {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #334155;
+    color: #e2e8f0;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.statButton:hover {
+    background-color: #475569;
+}
+
+.statButton.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+/* Mobile: horizontally scrollable pill bar */
+@media (max-width: 767px) {
+    .buttonContainer {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 0.25rem;
+        gap: 0.5rem;
+        flex-wrap: nowrap;
+    }
+
+    .buttonContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+    .statButton {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        padding: 0.625rem 1.125rem;
+        font-size: 0.875rem;
+        border-radius: 1.5rem;
+    }
+}

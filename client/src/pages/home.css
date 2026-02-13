@@ -1,0 +1,86 @@
+/* League Slideshow Animation */
+.slideshow-container::before,
+.slideshow-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slideshow-track {
+  animation: scroll 40s linear infinite;
+  width: fit-content;
+}
+
+.slideshow-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* League Card Styling */
+.league-slide {
+  width: 250px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(71, 85, 105, 0.12);
+  transition: all 0.3s ease;
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+
+/* Desktop hover effect */
+@media (min-width: 1024px) {
+  .league-slide:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    background: rgba(30, 41, 59, 0.5);
+    border-color: rgba(148, 163, 184, 0.3);
+    box-shadow: 0 8px 24px rgba(100, 116, 139, 0.2);
+    transform: translateY(-4px);
+  }
+}
+
+/* Mobile active state - automatically applied to visible card */
+@media (max-width: 1023px) {
+  .league-slide-active-mobile {
+    filter: grayscale(0%) !important;
+    opacity: 1 !important;
+    background: rgba(30, 41, 59, 0.5);
+    border-color: rgba(148, 163, 184, 0.3);
+    box-shadow: 0 8px 24px rgba(100, 116, 139, 0.2);
+    transform: scale(1.05);
+  }
+
+  /* Ensure smooth transitions on mobile */
+  .league-slide {
+    transition: all 0.5s ease;
+  }
+}
+
+/* Glass button effect */
+.glass-button {
+  background: rgba(15, 23, 42, 0.5) !important;
+  backdrop-filter: blur(8px);
+  border-color: rgba(148, 163, 184, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
+}
+
+.glass-button:hover {
+  background: rgba(30, 41, 59, 0.7) !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(148, 163, 184, 0.25);
+  transform: translateY(-2px);
+}

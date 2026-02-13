@@ -1,0 +1,215 @@
+.season-chart-container {
+    background-color: rgba(15, 23, 42, 0.5);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid #1e293b;
+    margin-bottom: 2rem;
+}
+
+/* Chart Controls */
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.metric-select {
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    background-color: #334155;
+    color: #e2e8f0;
+    font-weight: 500;
+    border: 1px solid #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.metric-select:hover {
+    background-color: #475569;
+}
+
+.metric-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Warnings and Notices */
+.match-warning {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #fbbf24;
+}
+
+.warning-icon {
+    font-size: 1rem;
+}
+
+.in-progress-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(153, 27, 27, 0.1);
+    border: 1px solid rgba(153, 27, 27, 0.3);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #fca5a5;
+}
+
+.notice-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Chart Wrapper */
+.chart-wrapper {
+    margin-top: 1rem;
+}
+
+/* Custom Tooltip */
+.chart-tooltip {
+    background-color: rgba(15, 23, 42, 0.95);
+    padding: 0.75rem 1rem;
+    border: 1px solid #3b82f6;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip-season {
+    color: #f1f5f9;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.in-progress-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    background-color: #991b1b;
+    color: #fca5a5;
+    border-radius: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.tooltip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.tooltip-team {
+    color: #cbd5e1;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.tooltip-value {
+    color: #60a5fa;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.tooltip-matches {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+/* Recharts overrides */
+.recharts-legend-item-text {
+    color: #e2e8f0 !important;
+}
+
+.recharts-default-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* ═══════════════════════════════════════════
+   Mobile Responsive
+   ═══════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .season-chart-container {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+    }
+
+    .chart-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .metric-label {
+        font-size: 0.875rem;
+    }
+
+    .metric-select {
+        width: 100%;
+        padding: 0.625rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .match-warning,
+    .in-progress-notice {
+        font-size: 0.8125rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .chart-wrapper {
+        margin-top: 0.5rem;
+        margin-left: -0.25rem;
+        margin-right: -0.25rem;
+    }
+
+    .recharts-default-legend {
+        gap: 0.5rem;
+    }
+
+    .chart-tooltip {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .tooltip-season {
+        font-size: 0.85rem;
+    }
+
+    .tooltip-team,
+    .tooltip-value {
+        font-size: 0.8rem;
+    }
+}

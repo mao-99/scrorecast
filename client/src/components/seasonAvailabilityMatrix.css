@@ -1,0 +1,142 @@
+.availability-matrix {
+    margin-bottom: 3rem;
+    overflow-x: auto;
+}
+
+.matrix-title {
+    font-size: 1.875rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #f1f5f9;
+}
+
+.matrix-container {
+    overflow-x: auto;
+}
+
+.availability-matrix table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-weight: 600;
+}
+
+.availability-matrix thead tr {
+    background: #3b82f6;
+    border-radius: 1rem;
+}
+
+.availability-matrix thead tr th:first-child {
+    border-radius: 0.5rem 0 0 0;
+}
+
+.availability-matrix thead tr th:last-child {
+    border-radius: 0 0.5rem 0 0;
+}
+
+.availability-matrix th {
+    padding: 1rem 1rem;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: transparent;
+}
+
+.team-header {
+    text-align: left !important;
+}
+
+.season-header {
+    white-space: nowrap;
+}
+
+.availability-matrix tbody tr {
+    border-bottom: 1px solid #1e293b;
+    cursor: default;
+    transition: background-color 0.2s ease;
+}
+
+.availability-matrix tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.15);
+}
+
+.availability-matrix td {
+    padding: 0.875rem 1rem;
+    color: #cbd5e1;
+    text-align: center;
+    font-weight: 600;
+}
+
+.team-label {
+    text-align: left !important;
+    color: #f1f5f9;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.league-tag {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-left: 0.25rem;
+}
+
+.availability-cell {
+    font-size: 1.25rem;
+}
+
+.available {
+    color: #4ade80;
+}
+
+.unavailable {
+    color: #475569;
+}
+
+/* ═══════════════════════════════════════════
+   Mobile: Transposed Matrix
+   Seasons = rows, Teams = columns
+   ═══════════════════════════════════════════ */
+.availability-matrix--mobile {
+    margin-bottom: 2rem;
+}
+
+.availability-matrix--mobile table {
+    width: 100%;
+}
+
+/* Column headers (team abbreviations) */
+.team-col-header {
+    font-size: 0.75rem !important;
+    padding: 0.625rem 0.5rem !important;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* First column header */
+.season-col-header {
+    text-align: left !important;
+    font-size: 0.75rem !important;
+    padding: 0.625rem 0.5rem !important;
+}
+
+/* Season label in first column */
+.season-row-label {
+    text-align: left !important;
+    color: #f1f5f9;
+    font-weight: 700;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    padding: 0.625rem 0.5rem !important;
+}
+
+.availability-matrix--mobile .availability-cell {
+    padding: 0.625rem 0.5rem;
+    font-size: 1.125rem;
+}

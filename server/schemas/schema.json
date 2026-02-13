@@ -1,0 +1,1662 @@
+{
+  "extracted_at": "2026-01-03T17:39:04.208Z",
+  "database": "scorecast",
+  "enums": {
+    "match_result": [
+      "{win,draw,loss}"
+    ],
+    "season_status": [
+      "{completed,active,upcoming}"
+    ],
+    "user_role": [
+      "{admin,analyst,viewer}"
+    ]
+  },
+  "tables": {
+    "dashboards": {
+      "row_count": "-1",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('dashboard__id_seq'::regclass)",
+          "generated": false
+        },
+        "user_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "name": {
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "description": {
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "configuration": {
+          "type": "JSONB",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "is_public": {
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": "false",
+          "generated": false
+        },
+        "is_favorite": {
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": "false",
+          "generated": false
+        },
+        "view_count": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "generated": false
+        },
+        "tags": {
+          "type": "TEXT[]",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "unique_user_dashboard",
+          "columns": [
+            "{user_id,name}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "2200_42684_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42684_2_not_null",
+          "expression": "user_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42684_3_not_null",
+          "expression": "name IS NOT NULL"
+        },
+        {
+          "name": "2200_42684_5_not_null",
+          "expression": "configuration IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "dashboard__pkey",
+          "definition": "CREATE UNIQUE INDEX dashboard__pkey ON public.dashboards USING btree (id)"
+        },
+        {
+          "name": "unique_user_dashboard",
+          "definition": "CREATE UNIQUE INDEX unique_user_dashboard ON public.dashboards USING btree (user_id, name)"
+        }
+      ]
+    },
+    "leagues": {
+      "row_count": "-1",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('league__id_seq'::regclass)",
+          "generated": false
+        },
+        "slug": {
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "country": {
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "json_id": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "name": {
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "league__json_id_key",
+          "columns": [
+            "{json_id}"
+          ]
+        },
+        {
+          "name": "league__name_key",
+          "columns": [
+            "{slug}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "2200_42474_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42474_2_not_null",
+          "expression": "slug IS NOT NULL"
+        },
+        {
+          "name": "2200_42474_3_not_null",
+          "expression": "country IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "league__pkey",
+          "definition": "CREATE UNIQUE INDEX league__pkey ON public.leagues USING btree (id)"
+        },
+        {
+          "name": "league__name_key",
+          "definition": "CREATE UNIQUE INDEX league__name_key ON public.leagues USING btree (slug)"
+        },
+        {
+          "name": "league__json_id_key",
+          "definition": "CREATE UNIQUE INDEX league__json_id_key ON public.leagues USING btree (json_id)"
+        }
+      ]
+    },
+    "match_statistics": {
+      "row_count": "31596",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('match_statistics_id_seq'::regclass)",
+          "generated": false
+        },
+        "match_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "team_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "opponent_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "is_home": {
+          "type": "BOOLEAN",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "result": {
+          "type": "USER-DEFINED",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "points": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "goals_scored": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "goals_conceded": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "possession": {
+          "type": "DECIMAL(4,3)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "shots": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "shots_on_goal": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "shots_off_goal": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "corner_kicks": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "offsides": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "fouls": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "goalkeeper_saves": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "xg": {
+          "type": "DECIMAL(4,3)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "blocked_shots": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "big_chances": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "shots_inside_box": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "shots_outside_box": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "hit_woodwork": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "headed_goals": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "free_kicks": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "yellow_cards": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "red_cards": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "throw_ins": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "touches_in_opposition_box": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "clearances": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "interceptions": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "passes_attempted": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "passes_completed": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "pass_accuracy": {
+          "type": "DECIMAL(4,3)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "final_third_passes_attempted": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "final_third_passes_completed": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "final_third_pass_accuracy": {
+          "type": "DECIMAL(4,3)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "crosses_attempted": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "crosses_completed": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "cross_accuracy": {
+          "type": "DECIMAL(4,3)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "tackles_attempted": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "tackles_won": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "tackle_success_rate": {
+          "type": "DECIMAL(4,3)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "json_id": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "shot_accuracy": {
+          "type": "DECIMAL",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "goal_efficiency": {
+          "type": "DECIMAL",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "conversion_rate": {
+          "type": "DECIMAL",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "xg_difference": {
+          "type": "DECIMAL",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "xg_efficiency": {
+          "type": "DECIMAL",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "unique_team_match",
+          "columns": [
+            "{match_id,team_id}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "match_statistics_points_check",
+          "expression": "(points = ANY (ARRAY[0, 1, 3]))"
+        },
+        {
+          "name": "match_statistics_possession_check",
+          "expression": "((possession >= (0)::numeric) AND (possession <= (1)::numeric))"
+        },
+        {
+          "name": "match_statistics_shots_check",
+          "expression": "(shots >= 0)"
+        },
+        {
+          "name": "match_statistics_shots_on_goal_check",
+          "expression": "(shots_on_goal >= 0)"
+        },
+        {
+          "name": "match_statistics_shots_off_goal_check",
+          "expression": "(shots_off_goal >= 0)"
+        },
+        {
+          "name": "match_statistics_corner_kicks_check",
+          "expression": "(corner_kicks >= 0)"
+        },
+        {
+          "name": "match_statistics_offsides_check",
+          "expression": "(offsides >= 0)"
+        },
+        {
+          "name": "match_statistics_fouls_check",
+          "expression": "(fouls >= 0)"
+        },
+        {
+          "name": "match_statistics_goalkeeper_saves_check",
+          "expression": "(goalkeeper_saves >= 0)"
+        },
+        {
+          "name": "match_statistics_xg_check",
+          "expression": "(xg >= (0)::numeric)"
+        },
+        {
+          "name": "match_statistics_blocked_shots_check",
+          "expression": "(blocked_shots >= 0)"
+        },
+        {
+          "name": "match_statistics_big_chances_check",
+          "expression": "(big_chances >= 0)"
+        },
+        {
+          "name": "match_statistics_shots_inside_box_check",
+          "expression": "(shots_inside_box >= 0)"
+        },
+        {
+          "name": "match_statistics_shots_outside_box_check",
+          "expression": "(shots_outside_box >= 0)"
+        },
+        {
+          "name": "match_statistics_hit_woodwork_check",
+          "expression": "(hit_woodwork >= 0)"
+        },
+        {
+          "name": "match_statistics_headed_goals_check",
+          "expression": "(headed_goals >= 0)"
+        },
+        {
+          "name": "match_statistics_free_kicks_check",
+          "expression": "(free_kicks >= 0)"
+        },
+        {
+          "name": "match_statistics_yellow_cards_check",
+          "expression": "(yellow_cards >= 0)"
+        },
+        {
+          "name": "match_statistics_red_cards_check",
+          "expression": "(red_cards >= 0)"
+        },
+        {
+          "name": "match_statistics_throw_ins_check",
+          "expression": "(throw_ins >= 0)"
+        },
+        {
+          "name": "match_statistics_touches_in_opposition_box_check",
+          "expression": "(touches_in_opposition_box >= 0)"
+        },
+        {
+          "name": "match_statistics_clearances_check",
+          "expression": "(clearances >= 0)"
+        },
+        {
+          "name": "match_statistics_interceptions_check",
+          "expression": "(interceptions >= 0)"
+        },
+        {
+          "name": "match_statistics_passes_attempted_check",
+          "expression": "(passes_attempted >= 0)"
+        },
+        {
+          "name": "match_statistics_passes_completed_check",
+          "expression": "(passes_completed >= 0)"
+        },
+        {
+          "name": "match_statistics_final_third_passes_attempted_check",
+          "expression": "(final_third_passes_attempted >= 0)"
+        },
+        {
+          "name": "match_statistics_final_third_passes_completed_check",
+          "expression": "(final_third_passes_completed >= 0)"
+        },
+        {
+          "name": "match_statistics_final_third_pass_accuracy_check",
+          "expression": "((final_third_pass_accuracy >= (0)::numeric) AND (final_third_pass_accuracy <= (1)::numeric))"
+        },
+        {
+          "name": "match_statistics_crosses_attempted_check",
+          "expression": "(crosses_attempted >= 0)"
+        },
+        {
+          "name": "match_statistics_crosses_completed_check",
+          "expression": "(crosses_completed >= 0)"
+        },
+        {
+          "name": "match_statistics_cross_accuracy_check",
+          "expression": "((cross_accuracy >= (0)::numeric) AND (cross_accuracy <= (1)::numeric))"
+        },
+        {
+          "name": "match_statistics_tackles_attempted_check",
+          "expression": "(tackles_attempted >= 0)"
+        },
+        {
+          "name": "match_statistics_tackles_won_check",
+          "expression": "(tackles_won >= 0)"
+        },
+        {
+          "name": "match_statistics_tackle_success_rate_check",
+          "expression": "((tackle_success_rate >= (0)::numeric) AND (tackle_success_rate <= (1)::numeric))"
+        },
+        {
+          "name": "chk_different_opponents",
+          "expression": "(team_id <> opponent_id)"
+        },
+        {
+          "name": "chk_tackles_logical",
+          "expression": "((tackles_won IS NULL) OR (tackles_attempted IS NULL) OR (tackles_won <= tackles_attempted))"
+        },
+        {
+          "name": "chk_crosses_logical",
+          "expression": "((crosses_completed IS NULL) OR (crosses_attempted IS NULL) OR (crosses_completed <= crosses_attempted))"
+        },
+        {
+          "name": "2200_42548_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_2_not_null",
+          "expression": "match_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_3_not_null",
+          "expression": "team_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_4_not_null",
+          "expression": "opponent_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_5_not_null",
+          "expression": "is_home IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_6_not_null",
+          "expression": "result IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_7_not_null",
+          "expression": "points IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_8_not_null",
+          "expression": "goals_scored IS NOT NULL"
+        },
+        {
+          "name": "2200_42548_9_not_null",
+          "expression": "goals_conceded IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "match_statistics_pkey",
+          "definition": "CREATE UNIQUE INDEX match_statistics_pkey ON public.match_statistics USING btree (id)"
+        },
+        {
+          "name": "unique_team_match",
+          "definition": "CREATE UNIQUE INDEX unique_team_match ON public.match_statistics USING btree (match_id, team_id)"
+        }
+      ]
+    },
+    "matches": {
+      "row_count": "15805",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('match__id_seq'::regclass)",
+          "generated": false
+        },
+        "season_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "league_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "round": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "match_date": {
+          "type": "DATE",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "match_time": {
+          "type": "TIME WITHOUT TIME ZONE",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "home_team_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "away_team_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "home_goals": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_goals": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "result": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "json_id": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "unique_match_extended",
+          "columns": [
+            "{season_id,round,home_team_id,away_team_id,match_date,match_time}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "match__result_check",
+          "expression": "(result = ANY (ARRAY[0, 1, 2]))"
+        },
+        {
+          "name": "chk_different_teams",
+          "expression": "(home_team_id <> away_team_id)"
+        },
+        {
+          "name": "2200_42513_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_2_not_null",
+          "expression": "season_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_3_not_null",
+          "expression": "league_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_4_not_null",
+          "expression": "round IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_5_not_null",
+          "expression": "match_date IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_6_not_null",
+          "expression": "match_time IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_7_not_null",
+          "expression": "home_team_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_8_not_null",
+          "expression": "away_team_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_9_not_null",
+          "expression": "home_goals IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_10_not_null",
+          "expression": "away_goals IS NOT NULL"
+        },
+        {
+          "name": "2200_42513_11_not_null",
+          "expression": "result IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "match__pkey",
+          "definition": "CREATE UNIQUE INDEX match__pkey ON public.matches USING btree (id)"
+        },
+        {
+          "name": "unique_match_extended",
+          "definition": "CREATE UNIQUE INDEX unique_match_extended ON public.matches USING btree (season_id, round, home_team_id, away_team_id, match_date, match_time)"
+        }
+      ]
+    },
+    "seasons": {
+      "row_count": "55",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('season__id_seq'::regclass)",
+          "generated": false
+        },
+        "league_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "name": {
+          "type": "VARCHAR(20)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "status": {
+          "type": "USER-DEFINED",
+          "nullable": true,
+          "default": "'completed'::season_status",
+          "generated": false
+        },
+        "num_teams": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "rounds": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "json_id": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "unique_league_season",
+          "columns": [
+            "{league_id,name}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "2200_42485_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42485_2_not_null",
+          "expression": "league_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42485_3_not_null",
+          "expression": "name IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "season__pkey",
+          "definition": "CREATE UNIQUE INDEX season__pkey ON public.seasons USING btree (id)"
+        },
+        {
+          "name": "unique_league_season",
+          "definition": "CREATE UNIQUE INDEX unique_league_season ON public.seasons USING btree (league_id, name)"
+        }
+      ]
+    },
+    "team_seasons": {
+      "row_count": "1059",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('team_season_id_seq'::regclass)",
+          "generated": false
+        },
+        "team_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "season_id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "matches_played": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "wins": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "draws": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "losses": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "points": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "goals_for": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "goals_against": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "goal_difference": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": true
+        },
+        "clean_sheets": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "failed_to_score": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "home_matches": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_matches": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "home_wins": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "home_draws": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "home_losses": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_wins": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_draws": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_losses": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "home_goals_for": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "home_goals_against": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_goals_for": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "away_goals_against": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "0",
+          "generated": false
+        },
+        "form": {
+          "type": "VARCHAR(5)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "points_per_game": {
+          "type": "DECIMAL(5,3)",
+          "nullable": true,
+          "default": null,
+          "generated": true
+        },
+        "win_percentage": {
+          "type": "DECIMAL(6,3)",
+          "nullable": true,
+          "default": null,
+          "generated": true
+        },
+        "home_win_percentage": {
+          "type": "DECIMAL(6,3)",
+          "nullable": true,
+          "default": null,
+          "generated": true
+        },
+        "away_win_percentage": {
+          "type": "DECIMAL(6,3)",
+          "nullable": true,
+          "default": null,
+          "generated": true
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "json_id": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "team_season_json_id_key",
+          "columns": [
+            "{json_id}"
+          ]
+        },
+        {
+          "name": "unique_team_season",
+          "columns": [
+            "{team_id,season_id}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "chk_matches_total",
+          "expression": "(matches_played = ((wins + draws) + losses))"
+        },
+        {
+          "name": "chk_home_away_total",
+          "expression": "((home_matches + away_matches) = matches_played)"
+        },
+        {
+          "name": "chk_points_calculation",
+          "expression": "(points = ((wins * 3) + draws))"
+        },
+        {
+          "name": "2200_42615_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_2_not_null",
+          "expression": "team_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_3_not_null",
+          "expression": "season_id IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_4_not_null",
+          "expression": "matches_played IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_5_not_null",
+          "expression": "wins IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_6_not_null",
+          "expression": "draws IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_7_not_null",
+          "expression": "losses IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_8_not_null",
+          "expression": "points IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_9_not_null",
+          "expression": "goals_for IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_10_not_null",
+          "expression": "goals_against IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_12_not_null",
+          "expression": "clean_sheets IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_13_not_null",
+          "expression": "failed_to_score IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_14_not_null",
+          "expression": "home_matches IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_15_not_null",
+          "expression": "away_matches IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_16_not_null",
+          "expression": "home_wins IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_17_not_null",
+          "expression": "home_draws IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_18_not_null",
+          "expression": "home_losses IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_19_not_null",
+          "expression": "away_wins IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_20_not_null",
+          "expression": "away_draws IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_21_not_null",
+          "expression": "away_losses IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_22_not_null",
+          "expression": "home_goals_for IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_23_not_null",
+          "expression": "home_goals_against IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_24_not_null",
+          "expression": "away_goals_for IS NOT NULL"
+        },
+        {
+          "name": "2200_42615_25_not_null",
+          "expression": "away_goals_against IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "team_season_pkey",
+          "definition": "CREATE UNIQUE INDEX team_season_pkey ON public.team_seasons USING btree (id)"
+        },
+        {
+          "name": "unique_team_season",
+          "definition": "CREATE UNIQUE INDEX unique_team_season ON public.team_seasons USING btree (team_id, season_id)"
+        },
+        {
+          "name": "team_season_json_id_key",
+          "definition": "CREATE UNIQUE INDEX team_season_json_id_key ON public.team_seasons USING btree (json_id)"
+        }
+      ]
+    },
+    "teams": {
+      "row_count": "192",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('team__id_seq'::regclass)",
+          "generated": false
+        },
+        "name": {
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "full_name": {
+          "type": "VARCHAR(150)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "short_name": {
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "country": {
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "json_id": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "unique_team_name",
+          "columns": [
+            "{name,country}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "2200_42502_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42502_2_not_null",
+          "expression": "name IS NOT NULL"
+        },
+        {
+          "name": "2200_42502_3_not_null",
+          "expression": "full_name IS NOT NULL"
+        },
+        {
+          "name": "2200_42502_4_not_null",
+          "expression": "short_name IS NOT NULL"
+        },
+        {
+          "name": "2200_42502_5_not_null",
+          "expression": "country IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "team__pkey",
+          "definition": "CREATE UNIQUE INDEX team__pkey ON public.teams USING btree (id)"
+        },
+        {
+          "name": "unique_team_name",
+          "definition": "CREATE UNIQUE INDEX unique_team_name ON public.teams USING btree (name, country)"
+        }
+      ]
+    },
+    "users": {
+      "row_count": "-1",
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('user__id_seq'::regclass)",
+          "generated": false
+        },
+        "username": {
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "email": {
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "password_hash": {
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "generated": false
+        },
+        "first_name": {
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "last_name": {
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "role": {
+          "type": "USER-DEFINED",
+          "nullable": true,
+          "default": "'viewer'::user_role",
+          "generated": false
+        },
+        "is_active": {
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": "true",
+          "generated": false
+        },
+        "last_login": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "preferences": {
+          "type": "JSONB",
+          "nullable": true,
+          "default": null,
+          "generated": false
+        },
+        "created_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        },
+        "updated_at": {
+          "type": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true,
+          "default": "now()",
+          "generated": false
+        }
+      },
+      "unique_constraints": [
+        {
+          "name": "user__email_key",
+          "columns": [
+            "{email}"
+          ]
+        },
+        {
+          "name": "user__username_key",
+          "columns": [
+            "{username}"
+          ]
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "2200_42667_1_not_null",
+          "expression": "id IS NOT NULL"
+        },
+        {
+          "name": "2200_42667_2_not_null",
+          "expression": "username IS NOT NULL"
+        },
+        {
+          "name": "2200_42667_3_not_null",
+          "expression": "email IS NOT NULL"
+        },
+        {
+          "name": "2200_42667_4_not_null",
+          "expression": "password_hash IS NOT NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "user__pkey",
+          "definition": "CREATE UNIQUE INDEX user__pkey ON public.users USING btree (id)"
+        },
+        {
+          "name": "user__username_key",
+          "definition": "CREATE UNIQUE INDEX user__username_key ON public.users USING btree (username)"
+        },
+        {
+          "name": "user__email_key",
+          "definition": "CREATE UNIQUE INDEX user__email_key ON public.users USING btree (email)"
+        }
+      ]
+    }
+  },
+  "relationships": [
+    {
+      "name": "fk_dashboard_user",
+      "from_table": "dashboards",
+      "from_column": "user_id",
+      "to_table": "users",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_stats_match",
+      "from_table": "match_statistics",
+      "from_column": "match_id",
+      "to_table": "matches",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_stats_opponent",
+      "from_table": "match_statistics",
+      "from_column": "opponent_id",
+      "to_table": "teams",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_stats_team",
+      "from_table": "match_statistics",
+      "from_column": "team_id",
+      "to_table": "teams",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_match_away_team",
+      "from_table": "matches",
+      "from_column": "away_team_id",
+      "to_table": "teams",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_match_home_team",
+      "from_table": "matches",
+      "from_column": "home_team_id",
+      "to_table": "teams",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_match_league",
+      "from_table": "matches",
+      "from_column": "league_id",
+      "to_table": "leagues",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_match_season",
+      "from_table": "matches",
+      "from_column": "season_id",
+      "to_table": "seasons",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_season_league",
+      "from_table": "seasons",
+      "from_column": "league_id",
+      "to_table": "leagues",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_team_season_season",
+      "from_table": "team_seasons",
+      "from_column": "season_id",
+      "to_table": "seasons",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "name": "fk_team_season_team",
+      "from_table": "team_seasons",
+      "from_column": "team_id",
+      "to_table": "teams",
+      "to_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    }
+  ]
+}

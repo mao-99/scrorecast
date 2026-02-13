@@ -1,0 +1,115 @@
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #020617;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(15, 23, 42, 0.5);
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: rgba(30, 41, 59, 0.7);
+    box-shadow: 0 6px 20px rgba(148, 163, 184, 0.25);
+    transform: translateY(-2px);
+    border-color: rgba(148, 163, 184, 0.3);
+}
+
+.btn-primary {
+    background: rgba(30, 64, 175, 0.3);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+}
+
+.btn-primary:hover {
+    background: rgba(37, 99, 235, 0.4);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    color: #dbeafe;
+}
+
+/* Hero Section */
+.hero {
+    padding: 8rem 0 6rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    letter-spacing: -0.03em;
+    color: #f8fafc;
+}
+
+.hero-subtitle {
+    font-size: 1.35rem;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 400;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    margin-bottom: 6rem;
+}
+
+.cta-buttons .btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.05rem;
+}
