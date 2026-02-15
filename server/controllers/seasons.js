@@ -33,7 +33,7 @@ const getSeasons = async (req, res) => {
         res.status(200).json(results.rows);
     } catch (error) {
         console.error("Error getting seasons from db: ", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: 'Failed to fetch seasons' });
     }
 };
 
@@ -48,6 +48,11 @@ const getSeasonTeams = async (req, res) => {
         // Input validation
         if (!ids || !Array.isArray(ids) || ids.length === 0) {
             return res.status(400).json({ error: "Valid team IDs array required" });
+        }
+
+        // Validate all IDs are numbers
+        if (!ids.every(id => !isNaN(Number(id)))) {
+            return res.status(400).json({ error: 'All team IDs must be numbers' });
         }
 
         const query = `
@@ -100,7 +105,7 @@ const getSeasonTeams = async (req, res) => {
         res.status(200).json(response.rows);
     } catch (error) {
         console.error("Error getting team seasons progression:", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: 'Failed to fetch season progression' });
     }
 };
 
