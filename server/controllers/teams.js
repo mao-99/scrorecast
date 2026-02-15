@@ -9,6 +9,7 @@ const getTeams = async (req, res) => {
         res.status(200).send(results);
     } catch (error) {
         console.error("Error getting teams from db: ", error);
+        res.status(500).json({ error: 'Failed to fetch teams' })
     }
 }
 
@@ -16,6 +17,15 @@ const getTeamSeasons = async (req, res) => {
     
     // TODO: parse request body for team ids
     const ids = req.body.teamIds;
+
+    if (!Array.isArray(ids)) {
+        return res.status(400).json({ error: 'teamIds must be an array' })
+    }
+
+    // Validate all IDs are numbers
+    if (!ids.every(id => !isNaN(Number(id)))) {
+        return res.status(400).json({ error: 'All team IDs must be numbers' })
+    }
 
     const query = `SELECT 
                         season_id, 
@@ -30,7 +40,7 @@ const getTeamSeasons = async (req, res) => {
                     JOIN seasons ON team_seasons.season_id = seasons.id
                     JOIN leagues ON seasons.league_id = leagues.id
                     JOIN teams ON team_seasons.team_id = teams.id
-                    WHERE team_id IN (${ids.join(',')})
+                    WHERE team_id = ANY($1::int[])
                     GROUP BY seasons.status, seasons.name, season_id, leagues.id, leagues.name, leagues.country, teams.id, teams.full_name, teams.short_name
                     ORDER BY team_id ASC;
                     `;
@@ -38,7 +48,7 @@ const getTeamSeasons = async (req, res) => {
 
     if (ids.length > 0) {
         try {
-            const results = await pool.query(query);
+            const results = await pool.query(query, [ids]);
             // The goal of this is to get all season names where all selected teams participate.
             const combinedSeasons = {};
             results.rows.forEach((season) => {
@@ -53,7 +63,8 @@ const getTeamSeasons = async (req, res) => {
             );
             res.status(200).json([...seasonNames]);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error('Error getting team seasons:', error);
+            res.status(500).json({ error: 'Failed to fetch team seasons' });
         }   
     }
     else {
@@ -71,6 +82,24 @@ const getTeamStatistics = async (req, res) => {
 
         if (!teamIds || teamIds.length === 0 || !seasons || seasons.length === 0) {
             return res.status(200).json([]);
+        }
+
+        // Validate teamIds are numbers
+        if (!Array.isArray(teamIds) || !teamIds.every(id => !isNaN(Number(id)))) {
+            return res.status(400).json({ error: 'teamIds must be an array of numbers' })
+        }
+
+        // Validate seasons are strings
+        if (!Array.isArray(seasons) || !seasons.every(s => typeof s === 'string')) {
+            return res.status(400).json({ error: 'seasons must be an array of strings' })
+        }
+
+        // Validate round range if provided
+        if (roundStart !== undefined && isNaN(Number(roundStart))) {
+            return res.status(400).json({ error: 'roundStart must be a number' })
+        }
+        if (roundEnd !== undefined && isNaN(Number(roundEnd))) {
+            return res.status(400).json({ error: 'roundEnd must be a number' })
         }
 
 
@@ -543,7 +572,7 @@ const getTeamStatistics = async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching teams statistics:", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: 'Failed to fetch team statistics' });
     }
 }
 

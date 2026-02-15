@@ -1,0 +1,46 @@
+SCORECAST - Project Directory Structure
+========================================
+
+Root Level:
+├── README.md
+├── .env
+├── .gitignore
+├── .DS_Store
+├── server/                   # Backend (Node.js/Express)
+│   ├── server.js            # Main server entry point
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── .env
+│   ├── config/
+│   │   └── config.js        # Server configuration
+│   ├── db/
+│   │   ├── database.js      # Database connection
+│   │   └── extract-schema.js
+│   ├── controllers/         # Business logic
+│   │   ├── leagues.js
+│   │   ├── seasons.js
+│   │   ├── teams.js
+│   │   └── schema.js
+│   ├── routes/              # API endpoints
+│   │   ├── leagues.js
+│   │   ├── seasons.js
+│   │   ├── teams.js
+│   │   └── schema.js
+│   ├── schemas/
+│   │   └── schema.json
+│   └── node_modules/        # Dependencies (excluded from details)
+│
+├── client/                   # Frontend (React/Vite)
+│   ├── index.html
+│   ├── .gitignore
+│   ├── .dockerignore
+│   └── node_modules/        # Dependencies (excluded from details)
+│       └── [React, Redux, D3, Tailwind, Victory charts, etc.]
+│
+└── deploy/                   # Deployment configurations
+
+Key Technologies Detected:
+- Backend: Node.js, Express, PostgreSQL (pg), Nodemon
+- Frontend: React, Redux, Tailwind CSS, Victory Charts, D3, Vite
+- Database: PostgreSQL with pg driver
+- Development: Nodemon, ESLint

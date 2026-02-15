@@ -9,26 +9,37 @@ const getLeagues = async (req, res) => {
         res.status(200).send(results.rows)
     } catch (error) {
         console.error("Error getting leagues from db: ", error);
+        res.status(500).json({ error: 'Failed to fetch leagues' })
     }
 }
 
 const getLeagueSeasons = async (req, res) => {
     const leagueId = req.params.leagueId
-    const query = `SELECT * from seasons WHERE league_id=${leagueId} ORDER BY name;`
+
+    if (!leagueId || isNaN(Number(leagueId))) {
+        return res.status(400).json({ error: 'Invalid league ID' })
+    }
+
+    const query = `SELECT * from seasons WHERE league_id = $1 ORDER BY name;`
     try {
-        const results = await pool.query(query)
+        const results = await pool.query(query, [leagueId])
         res.status(200).send(results.rows)
     } catch (error) {
-        console.error("Error getting leagues from db: ", error);
+        console.error("Error getting league seasons from db: ", error);
+        res.status(500).json({ error: 'Failed to fetch league seasons' })
     }
 }
 
 const getLeagueStandings = async (req, res) => {
     const leagueId = req.params.leagueId;
     const seasonIds = req.body.seasons; // Get from request body
+
+    if (!leagueId || isNaN(Number(leagueId))) {
+        return res.status(400).json({ error: 'Invalid league ID' })
+    }
     
     // Validate seasons array
-    const seasonArray = Array.isArray(seasonIds) ? seasonIds : [];
+    const seasonArray = Array.isArray(seasonIds) ? seasonIds.filter(id => !isNaN(Number(id))) : [];
     
     if (seasonArray.length === 0) {
         return res.status(400).json({ error: "At least one season must be selected" });
