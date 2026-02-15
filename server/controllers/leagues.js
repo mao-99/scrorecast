@@ -32,7 +32,9 @@ const getLeagueSeasons = async (req, res) => {
 
 const getLeagueStandings = async (req, res) => {
     const leagueId = req.params.leagueId;
-    const seasonIds = req.body.seasons; // Get from request body
+    const seasonIds = req.body.seasons;
+    const roundStart = req.body.roundStart;
+    const roundEnd = req.body.roundEnd;
 
     if (!leagueId || isNaN(Number(leagueId))) {
         return res.status(400).json({ error: 'Invalid league ID' })
@@ -44,6 +46,13 @@ const getLeagueStandings = async (req, res) => {
     if (seasonArray.length === 0) {
         return res.status(400).json({ error: "At least one season must be selected" });
     }
+
+    // Build round filter clause and params
+    const hasRoundFilter = roundStart != null && roundEnd != null && !isNaN(Number(roundStart)) && !isNaN(Number(roundEnd));
+    const roundClause = hasRoundFilter ? `AND round >= $3 AND round <= $4` : '';
+    const queryParams = hasRoundFilter
+        ? [leagueId, seasonArray, Number(roundStart), Number(roundEnd)]
+        : [leagueId, seasonArray];
     
     const query = `
         WITH home_stats AS (
@@ -65,6 +74,7 @@ const getLeagueStandings = async (req, res) => {
               AND season_id = ANY($2::int[])
               AND home_goals IS NOT NULL
               AND away_goals IS NOT NULL
+              ${roundClause}
             GROUP BY home_team_id
         ),
         away_stats AS (
@@ -86,6 +96,7 @@ const getLeagueStandings = async (req, res) => {
               AND season_id = ANY($2::int[])
               AND home_goals IS NOT NULL
               AND away_goals IS NOT NULL
+              ${roundClause}
             GROUP BY away_team_id
         )
         SELECT 
@@ -112,7 +123,7 @@ const getLeagueStandings = async (req, res) => {
     `;
 
     try {
-        const results = await pool.query(query, [leagueId, seasonArray]);
+        const results = await pool.query(query, queryParams);
         res.status(200).json(results.rows);
     } catch (error) {
         console.error("Error getting league standings: ", error);

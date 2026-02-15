@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function RoundRangeSelector({ onRangeChange, maxRounds = 38 }) {
-    const [roundStart, setRoundStart] = useState(1);
-    const [roundEnd, setRoundEnd] = useState(maxRounds);
+export default function RoundRangeSelector({ onRangeChange, maxRounds = 38, initialStart = 1, initialEnd = 38 }) {
+    const [roundStart, setRoundStart] = useState(initialStart);
+    const [roundEnd, setRoundEnd] = useState(initialEnd);
 
     // Generate array of round numbers
     const rounds = Array.from({ length: maxRounds }, (_, i) => i + 1);
@@ -32,11 +32,6 @@ export default function RoundRangeSelector({ onRangeChange, maxRounds = 38 }) {
             onRangeChange({ start: roundStart, end: newEnd });
         }
     };
-
-    // Notify parent on initial mount
-    useEffect(() => {
-        onRangeChange({ start: roundStart, end: roundEnd });
-    }, []);
 
     return (
         <div className="round-range-container">

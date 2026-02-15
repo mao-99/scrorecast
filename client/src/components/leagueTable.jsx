@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-export default function LeagueTable({ leagueId, selectedSeasons, visibleCount, onLoadMore, onLoadLess }) {
+export default function LeagueTable({ leagueId, selectedSeasons, roundRange, isRoundFilterEnabled, visibleCount, onLoadMore, onLoadLess }) {
     const [standingsData, setStandingsData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -76,14 +76,20 @@ export default function LeagueTable({ leagueId, selectedSeasons, visibleCount, o
         const fetchStandings = async () => {
             setLoading(true);
             try {
+                const requestBody = {
+                    seasons: selectedSeasons,
+                    ...(isRoundFilterEnabled && roundRange?.start !== null && roundRange?.end !== null ? {
+                        roundStart: roundRange.start,
+                        roundEnd: roundRange.end
+                    } : {})
+                };
+
                 const response = await fetch(`/api/leagues/${leagueId}/standings`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        seasons: selectedSeasons
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 const data = await response.json();
                 console.log("Standings data:", data);
@@ -97,7 +103,7 @@ export default function LeagueTable({ leagueId, selectedSeasons, visibleCount, o
         };
 
         fetchStandings();
-    }, [leagueId, selectedSeasons]);
+    }, [leagueId, selectedSeasons, roundRange, isRoundFilterEnabled]);
 
     const toggleExpanded = () => {
         setSlideDirection(isExpanded ? 'slide-right' : 'slide-left');

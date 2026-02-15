@@ -10,7 +10,8 @@ export default function Leagues() {
     const [selectedLeague, setSelectedLeague] = useState(null);
     const [selectedLeagueName, setSelectedLeagueName] = useState('');
     const [selectedSeasons, setSelectedSeasons] = useState([]);
-    const [roundRange, setRoundRange] = useState({ start: 1, end: 38 });
+    const [isRoundFilterEnabled, setIsRoundFilterEnabled] = useState(false);
+    const [roundRange, setRoundRange] = useState({ start: null, end: null });
     const [statsData, setStatsData] = useState([]);
     const [visibleCount, setVisibleCount] = useState(10);
 
@@ -22,6 +23,19 @@ export default function Leagues() {
     const handleRoundRangeChange = (range) => {
         setRoundRange(range);
     }
+
+    const handleRoundFilterToggle = () => {
+        const newState = !isRoundFilterEnabled;
+        setIsRoundFilterEnabled(newState);
+        
+        if (newState) {
+            if (!roundRange.start || !roundRange.end) {
+                setRoundRange({ start: 1, end: 38 });
+            }
+        } else {
+            setRoundRange({ start: null, end: null });
+        }
+    };
 
     const handleSelectedSeasonChange = (seasons) => {
         setSelectedSeasons(seasons);
@@ -49,14 +63,20 @@ export default function Leagues() {
 
         const fetchStats = async () => {
             try {
+                const requestBody = {
+                    seasons: selectedSeasons,
+                    ...(isRoundFilterEnabled && roundRange.start !== null && roundRange.end !== null ? {
+                        roundStart: roundRange.start,
+                        roundEnd: roundRange.end
+                    } : {})
+                };
+
                 const response = await fetch(`/api/leagues/${selectedLeague}/standings`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        seasons: selectedSeasons
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 const data = await response.json();
                 setStatsData(data);
@@ -67,7 +87,7 @@ export default function Leagues() {
         };
 
         fetchStats();
-    }, [selectedLeague, selectedSeasons]);
+    }, [selectedLeague, selectedSeasons, roundRange, isRoundFilterEnabled]);
 
     useEffect(() => {
         console.log("Selected league updated:", selectedLeague);
@@ -84,9 +104,55 @@ export default function Leagues() {
 
             <div className="divider"></div>
 
-            {/* Round-Range Filter */}
+            {/* Round Filter Toggle */}
             {selectedSeasons.length > 0 && (
-                <RoundRangeSelector onRangeChange={handleRoundRangeChange} />
+                <>
+                    <div className="round-filter-toggle-container">
+                        <span className="toggle-section-label">Round Filtering</span>
+                        <div className="mode-toggle-container">
+                            <span className={`mode-label ${!isRoundFilterEnabled ? 'active' : ''}`}>Off</span>
+                            <div 
+                                className="toggle-switch"
+                                onClick={handleRoundFilterToggle}
+                                style={{
+                                    width: '36px',
+                                    height: '18px',
+                                    backgroundColor: isRoundFilterEnabled ? '#3b82f6' : '#6b7280',
+                                    borderRadius: '9px',
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s ease',
+                                    margin: '0 0.4rem'
+                                }}
+                            >
+                                <div 
+                                    className="toggle-slider"
+                                    style={{
+                                        width: '14px',
+                                        height: '14px',
+                                        backgroundColor: 'white',
+                                        borderRadius: '50%',
+                                        position: 'absolute',
+                                        top: '2px',
+                                        left: isRoundFilterEnabled ? '20px' : '2px',
+                                        transition: 'left 0.3s ease',
+                                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
+                                    }}
+                                />
+                            </div>
+                            <span className={`mode-label ${isRoundFilterEnabled ? 'active' : ''}`}>On</span>
+                        </div>
+                    </div>
+
+                    {/* Round Range Selector */}
+                    {isRoundFilterEnabled && (
+                        <RoundRangeSelector 
+                            onRangeChange={handleRoundRangeChange}
+                            initialStart={roundRange.start ?? 1}
+                            initialEnd={roundRange.end ?? 38}
+                        />
+                    )}
+                </>
             )}
 
             {/* League Overview Title with badge + Load Less */}
@@ -107,6 +173,8 @@ export default function Leagues() {
             <LeagueTable 
                 leagueId={selectedLeague} 
                 selectedSeasons={selectedSeasons}
+                roundRange={roundRange}
+                isRoundFilterEnabled={isRoundFilterEnabled}
                 visibleCount={visibleCount}
                 onLoadMore={handleLoadMore}
                 onLoadLess={handleLoadLess}
