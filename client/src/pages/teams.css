@@ -5,6 +5,13 @@
   padding: 1rem;
   max-width: 1280px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .teams-container {
+    padding: 0.5rem;
+  }
 }
 
 /* Sections */

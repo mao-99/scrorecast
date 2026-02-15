@@ -5,6 +5,13 @@
   padding: 1rem;
   max-width: 1280px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .leagues-container {
+    padding: 0.5rem;
+  }
 }
 
 /* Sections */
@@ -100,6 +107,9 @@
 
 /* Table */
 .table-container {
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
   margin-bottom: 3rem;
   overflow-x: auto;
 }
@@ -642,52 +652,45 @@
 
 .mobile-table-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0.25rem;
-  margin-bottom: 0.25rem;
-}
-
-.mobile-table-label {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-}
-
-/* Toggle arrow button — in the header bar, not overlaying the table */
-.expand-toggle {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(71, 85, 105, 0.5);
-  color: #cbd5e1;
-  font-size: 0.875rem;
+  align-items: center;
+  padding: 0.4rem 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Pill-style tab toggle for Standings / Goals */
+.table-view-toggle {
+  display: flex;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.table-view-toggle .tab-btn {
+  padding: 0.35rem 1rem;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
-  line-height: 1;
+  transition: all 0.25s ease;
+  background: transparent;
+  color: #64748b;
 }
 
-.expand-toggle:hover,
-.expand-toggle:active {
-  background: rgba(51, 65, 85, 0.9);
-  color: #f1f5f9;
+.table-view-toggle .tab-btn.active {
+  background: rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
 }
 
-/* Pulse animation on first load to hint at interactivity */
-.expand-toggle.pulse {
-  animation: pulse-glow 2s ease-in-out 3;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(148, 163, 184, 0); }
-  50% { box-shadow: 0 0 0 6px rgba(148, 163, 184, 0.25); }
+.table-view-toggle .tab-btn:not(.active):active {
+  background: rgba(51, 65, 85, 0.4);
+  color: #94a3b8;
 }
 
 /* =========================================
@@ -696,19 +699,14 @@
 
 .swipe-hint {
   text-align: center;
-  padding: 0.25rem 0;
+  padding: 0.15rem 0;
   margin-bottom: 0.25rem;
 }
 
 .swipe-hint span {
-  font-size: 0.7rem;
-  color: #64748b;
-  animation: hint-fade 5s ease-out forwards;
-}
-
-@keyframes hint-fade {
-  0%, 70% { opacity: 1; }
-  100% { opacity: 0; }
+  font-size: 0.65rem;
+  color: #475569;
+  font-style: italic;
 }
 
 /* =========================================

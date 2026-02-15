@@ -5,6 +5,13 @@
   padding: 2rem;
   text-align: center;
   background-color: #020617;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 0.5rem;
+  }
 }
 
 .logo {

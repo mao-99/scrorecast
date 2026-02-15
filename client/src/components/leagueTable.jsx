@@ -169,26 +169,28 @@ export default function LeagueTable({ leagueId, selectedSeasons, roundRange, isR
                         onTouchMove={handleTouchMove}
                         onTouchEnd={handleTouchEnd}
                     >
-                        {/* Header bar: label + toggle arrow — sits ABOVE the table */}
+                        {/* Pill-style tab toggle */}
                         <div className="mobile-table-header">
-                            <span className="mobile-table-label">
-                                {isExpanded ? 'Goals' : 'Standings'}
-                            </span>
-                            <button
-                                className={`expand-toggle ${showHint ? 'pulse' : ''}`}
-                                onClick={toggleExpanded}
-                                aria-label={isExpanded ? 'Show primary stats' : 'Show secondary stats'}
-                            >
-                                {isExpanded ? '←' : '→'}
-                            </button>
+                            <div className="table-view-toggle">
+                                <button
+                                    className={`tab-btn ${!isExpanded ? 'active' : ''}`}
+                                    onClick={() => { if (isExpanded) toggleExpanded(); }}
+                                >
+                                    Standings
+                                </button>
+                                <button
+                                    className={`tab-btn ${isExpanded ? 'active' : ''}`}
+                                    onClick={() => { if (!isExpanded) toggleExpanded(); }}
+                                >
+                                    Goals
+                                </button>
+                            </div>
                         </div>
 
                         {/* Swipe hint */}
-                        {showHint && (
-                            <div className="swipe-hint">
-                                <span>Swipe for more stats →</span>
-                            </div>
-                        )}
+                        <div className="swipe-hint">
+                            <span>Swipe or tap to switch views</span>
+                        </div>
 
                         {/* Table — no horizontal scroll */}
                         <div
