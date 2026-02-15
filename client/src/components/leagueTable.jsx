@@ -169,28 +169,30 @@ export default function LeagueTable({ leagueId, selectedSeasons, roundRange, isR
                         onTouchMove={handleTouchMove}
                         onTouchEnd={handleTouchEnd}
                     >
-                        {/* Pill-style tab toggle */}
+                        {/* Header bar: label + page dots + toggle arrow */}
                         <div className="mobile-table-header">
-                            <div className="table-view-toggle">
-                                <button
-                                    className={`tab-btn ${!isExpanded ? 'active' : ''}`}
-                                    onClick={() => { if (isExpanded) toggleExpanded(); }}
-                                >
-                                    Standings
-                                </button>
-                                <button
-                                    className={`tab-btn ${isExpanded ? 'active' : ''}`}
-                                    onClick={() => { if (!isExpanded) toggleExpanded(); }}
-                                >
-                                    Goals
-                                </button>
+                            <span className="mobile-table-label">
+                                {isExpanded ? 'Goals' : 'Standings'}
+                            </span>
+                            <div className="page-dots" onClick={toggleExpanded}>
+                                <span className={`dot ${!isExpanded ? 'active' : ''}`} />
+                                <span className={`dot ${isExpanded ? 'active' : ''}`} />
                             </div>
+                            <button
+                                className={`expand-toggle ${showHint ? 'pulse' : ''}`}
+                                onClick={toggleExpanded}
+                                aria-label={isExpanded ? 'Show primary stats' : 'Show secondary stats'}
+                            >
+                                {isExpanded ? '←' : '→'}
+                            </button>
                         </div>
 
                         {/* Swipe hint */}
-                        <div className="swipe-hint">
-                            <span>Swipe or tap to switch views</span>
-                        </div>
+                        {showHint && (
+                            <div className="swipe-hint">
+                                <span>Swipe for more stats →</span>
+                            </div>
+                        )}
 
                         {/* Table — no horizontal scroll */}
                         <div
