@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 *.env
+*.claude
+
+# Database dump (used for Docker seeding, not for repo)
+scorecast_dump.sql
