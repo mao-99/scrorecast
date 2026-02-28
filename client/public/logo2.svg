@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 372 372">
+  <!-- White background -->
+  <rect width="372" height="372" fill="#FFFFFF"/>
+
+  <!-- Optional white badge circle (keeps the same icon feel) -->
+  <circle cx="256" cy="256" r="220" fill="#FFFFFF"/>
+
+  <!-- Football mark -->
+  <g fill="#1E6BFF" stroke="#FFFFFF" stroke-width="18" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 6 outer panels -->
+    <polygon points="256.00,184.00 318.35,220.00 347.62,148.66 298.86,120.52"/>
+    <polygon points="318.35,220.00 318.35,292.00 390.35,284.08 390.35,227.92"/>
+    <polygon points="318.35,292.00 256.00,328.00 298.86,391.48 347.62,363.34"/>
+    <polygon points="256.00,328.00 193.65,292.00 164.38,363.34 213.14,391.48"/>
+    <polygon points="193.65,292.00 193.65,220.00 121.65,227.92 121.65,284.08"/>
+    <polygon points="193.65,220.00 256.00,184.00 213.14,120.52 164.38,148.66"/>
+
+    <!-- Center hex -->
+    <polygon points="256.00,184.00 318.35,220.00 318.35,292.00 256.00,328.00 193.65,292.00 193.65,220.00"/>
+  </g>
+</svg>

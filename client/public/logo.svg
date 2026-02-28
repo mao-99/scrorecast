@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#ffffff"/>
+
+  <!-- Outer circle outline -->
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#d9d9d9" stroke-width="3"/>
+
+  <!-- Mark (pastel panels + center hex) -->
+  <!-- Using a white stroke to create clean “gaps” like your example -->
+  <g stroke="#ffffff" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 6 outer panels (pastel) -->
+    <polygon fill="#c9c9c9" points="256,184 318.35,220 347.62,148.66 298.86,120.52"/>
+    <polygon fill="#a7d6f7" points="318.35,220 318.35,292 390.35,284.08 390.35,227.92"/>
+    <polygon fill="#ffd2a8" points="318.35,292 256,328 298.86,391.48 347.62,363.34"/>
+    <polygon fill="#bfe7c8" points="256,328 193.65,292 164.38,363.34 213.14,391.48"/>
+    <polygon fill="#f3b4b4" points="193.65,292 193.65,220 121.65,227.92 121.65,284.08"/>
+    <polygon fill="#d8ccf4" points="193.65,220 256,184 213.14,120.52 164.38,148.66"/>
+
+    <!-- Center hex -->
+    <polygon fill="#ff8f8f" points="256,184 318.35,220 318.35,292 256,328 193.65,292 193.65,220"/>
+  </g>
+</svg>
